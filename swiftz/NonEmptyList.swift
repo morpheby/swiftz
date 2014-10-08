@@ -31,6 +31,8 @@ public func ==<A : Equatable>(lhs : NonEmptyList<A>, rhs : NonEmptyList<A>) -> B
 }
 
 extension NonEmptyList : ArrayLiteralConvertible {
+  typealias Element = A
+
   static public func fromSeq<S : SequenceType where S.Generator.Element == A>(s : S) -> NonEmptyList<A> {
     // what compiler stage does this run in...?...
     var xs : [A] = []
@@ -44,6 +46,10 @@ extension NonEmptyList : ArrayLiteralConvertible {
       l = List(x, l)
     }
     return NonEmptyList(h!, l)
+  }
+
+  public init(arrayLiteral elements: Element...) {
+    self = NonEmptyList.fromSeq(elements)
   }
 
   static public func convertFromArrayLiteral(elements: A...) -> NonEmptyList<A> {

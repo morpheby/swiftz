@@ -7,7 +7,7 @@
 //
 
 extension Dictionary {
-  public func map<U, V>(transform: Element -> (U, V)) -> Dictionary<U, V> {
+  func map<U, V>(transform: Element -> (U, V)) -> Dictionary<U, V> {
     var d = Dictionary<U, V>(minimumCapacity: self.count)
     for (key, value) in self {
       switch transform(key, value) {
@@ -18,15 +18,15 @@ extension Dictionary {
   }
 
   // Linker bug
-  //    func mapValues<V>(transform: Element -> V) -> Dictionary<KeyType, V> {
-  //      var d = Dictionary<KeyType, V>(minimumCapacity: self.count)
-  //      for (key, value) in self {
-  //         d.updateValue(transform(key, value), forKey: key)
-  //      }
-  //      return d
-  //    }
+  func mapValues<V>(transform: Element -> V) -> Dictionary<Key, V> {
+    var d = Dictionary<Key, V>(minimumCapacity: self.count)
+    for (key, value) in self {
+       d.updateValue(transform(key, value), forKey: key)
+    }
+    return d
+  }
 
-  public func filter(filter: Element -> Bool) -> Dictionary {
+  func filter(filter: Element -> Bool) -> Dictionary {
     var f = Dictionary()
     for (k, v) in self {
       if filter(k, v) {
@@ -36,7 +36,7 @@ extension Dictionary {
     return f
   }
 
-  public func reduce<A>(start:A, reduce:(key:Key, val:Value, start:A) -> A) -> A {
+  func reduce<A>(start:A, reduce:(key:Key, val:Value, start:A) -> A) -> A {
     var reduced:A?
     for (k,v) in self {
       reduced = reduce(key:k, val:v, start:start)

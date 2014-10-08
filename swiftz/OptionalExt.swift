@@ -8,11 +8,11 @@
 
 // warning: flatMap can not be linked. rdar://17149404
 extension Optional {
-  public func flatMap<B>(f: (T -> Optional<B>)) -> Optional<B> {
+  func flatMap<B>(f: (T -> Optional<B>)) -> Optional<B> {
     return self.maybe(.None, f)
   }
 
-  public func maybe<B>(z : B, f : T -> B) -> B {
+  func maybe<B>(z : B, f : T -> B) -> B {
     switch self {
     case .None: return z
     case let .Some(x): return f(x)
@@ -20,7 +20,7 @@ extension Optional {
   }
 
   // scala's getOrElse
-  public func getOrElse(x: T) -> T {
+  func getOrElse(x: T) -> T {
     switch self {
     case .None: return x
     case let .Some(x): return x

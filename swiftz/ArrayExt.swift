@@ -12,15 +12,15 @@ extension Array {
   ///Array subscripting is bad and you should feel bad for using it.
   ///This is a safe alternative that eleminates out of bounds errors
   ///and returns an Optional instead.
-  public func safeIndex(i: Int) -> T? {
+  func safeIndex(i: Int) -> T? {
     return indexArray(self, i)
   }
-    
+
 
     
   ///Appends an array onto the end of the receiving array.
   ///Does not mutate the receiving array.
-  public func join(array:[T]) -> [T] {
+  func join(array:[T]) -> [T] {
     if array.isEmpty {
       return self
     }
@@ -31,7 +31,7 @@ extension Array {
     }
   }
 
-  public func mapWithIndex<U>(f: (Int, T) -> U) -> [U] {
+  func mapWithIndex<U>(f: (Int, T) -> U) -> [U] {
     var res = [U]()
     res.reserveCapacity(count)
     for i in 0 ..< count {
@@ -40,7 +40,7 @@ extension Array {
     return res
   }
 
-  public func foldRight<U>(z: U, _ f: (T, U) -> U) -> U {
+  func foldRight<U>(z: U, _ f: (T, U) -> U) -> U {
     var res = z
     for x in self {
       res = f(x, res)

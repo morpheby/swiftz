@@ -32,7 +32,7 @@ public struct Set<A: Hashable> : SequenceType {
     // an empty set
   }
 
-  public init(items:A...) {
+  public init(arrayLiteral items:A...) {
     for obj in items {
       bucket[obj] = true
     }
@@ -213,7 +213,7 @@ func ∪<A>(lhs:Set<A>, rhs:Set<A>) -> Set<A> {
 // Set 'functions'
 
 func pure<A>(a:A) -> Set<A> {
-  return Set(items: a)
+  return Set(arrayLiteral: a)
 }
 
 func <^><A, B>(f: A -> B, set:Set<A>) -> Set<B> {

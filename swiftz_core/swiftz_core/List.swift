@@ -100,6 +100,8 @@ public func ==<A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
 }
 
 extension List : ArrayLiteralConvertible {
+  typealias Element = A
+
   static public func fromSeq<S : SequenceType where S.Generator.Element == A>(s : S) -> List<A> {
     // For some reason, everything simpler seems to crash the compiler
     var xs : [A] = []
@@ -112,6 +114,10 @@ extension List : ArrayLiteralConvertible {
       l = List(x, l)
     }
     return l
+  }
+
+  public init(arrayLiteral elements: A...) {
+    self = List.fromSeq(elements)
   }
 
   public static func convertFromArrayLiteral(elements: A...) -> List<A> {
