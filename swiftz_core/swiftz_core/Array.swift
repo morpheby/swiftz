@@ -33,7 +33,7 @@ public func <*><A, B>(f: [(A -> B)], a: [A]) -> [B] {
 
 /// Monadic `bind`. Given an [A], and a function from A -> [B],
 /// applies the function `f` to every element in [A] and returns the result.
-public func >>-<A, B>(a: [A], f: A -> [B]) -> [B] {
+public func >>-<A, B, S1 : SequenceType, S2 : SequenceType where S1.Generator.Element == A, S2.Generator.Element == B>(a: S1, f: A -> S2) -> [B] {
   var re = [B]()
   for x in a {
     re.extend(f(x))
