@@ -25,7 +25,7 @@ public enum JSONValue: Printable {
       })
     case let JSONNumber(n): return NSNumber(double: n)
     case let JSONString(s): return NSString(string: s)
-    case let JSONBool(b): return NSNumber.numberWithBool(b)
+    case let JSONBool(b): return NSNumber(bool: b)
     case let JSONNull(): return NSNull()
     }
   }
