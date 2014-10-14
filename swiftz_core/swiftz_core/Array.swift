@@ -14,8 +14,9 @@ public func pure<A>(a: A) -> [A] {
 }
 
 /// Functor `fmap`. This is the same as calling a.map(f).
-public func <^><A, B>(f: A -> B, a: [A]) -> [B] {
-  return a.map(f)
+public func <^><A, B, S1: SequenceType where S1.Generator.Element == A>
+    (f: A -> B, a: S1) -> [B] {
+  return Array(map(a, f))
 }
 
 /// Applicative Functor `apply`. Given an [A -> B] and an [A],
@@ -33,7 +34,8 @@ public func <*><A, B>(f: [(A -> B)], a: [A]) -> [B] {
 
 /// Monadic `bind`. Given an [A], and a function from A -> [B],
 /// applies the function `f` to every element in [A] and returns the result.
-public func >>-<A, B, S1 : SequenceType, S2 : SequenceType where S1.Generator.Element == A, S2.Generator.Element == B>(a: S1, f: A -> S2) -> [B] {
+public func >>-<A, B, S1: SequenceType, S2: SequenceType where S1.Generator.Element == A, S2.Generator.Element == B>
+    (a: S1, f: A -> S2) -> [B] {
   var re = [B]()
   for x in a {
     re.extend(f(x))
