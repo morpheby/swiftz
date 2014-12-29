@@ -11,6 +11,7 @@ import Foundation
 // Operators
 infix operator • {
 associativity right
+precedence 150
 }
 
 infix operator |> {
@@ -24,6 +25,7 @@ associativity left
 // "fmap" like
 infix operator  <^> {
 associativity left
+precedence 150
 }
 
 // "imap" like
@@ -49,4 +51,5 @@ associativity left
 /// Monadic bind operator, because >>= is already in the standard lib.
 infix operator >>- {
 associativity left
+precedence 110
 }

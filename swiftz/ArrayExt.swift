@@ -218,8 +218,8 @@ public func any<A>(list: [A], f: (A -> Bool)) -> Bool {
 ///Applied to a predicate and a list, all determines if all elements of the list satisfy the predicate. 
 ///For the result to be True, the list must be finite; False, however, results from a False value for
 ///the predicate applied to an element at a finite index of a finite or infinite list.
-public func all<A>(list: [A], f: (A -> Bool)) -> Bool {
-  return and(list.map(f))
+public func all<A, SType: SequenceType where SType.Generator.Element == A>(list: SType, f: (A -> Bool)) -> Bool {
+  return and(map(list, f))
 }
 
 ///Concatenate a list of lists.
