@@ -9,5 +9,14 @@
 import Foundation
 /// An enum that represents Nothing
 public enum Nothing {
+    case NothingActual
 
+    public init() {
+        self = .NothingActual
+    }
 }
+
+public func ignore<T>(x: T) -> Nothing {
+    return Nothing()
+}
+

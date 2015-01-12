@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import swiftz_core
 
 public enum JSONValue: Printable {
   case JSONArray([JSONValue])
@@ -57,15 +58,15 @@ public enum JSONValue: Printable {
   }
 
   // TODO: should this be optional?
-  public static func decode(s: NSData) -> JSONValue? {
+  public static func decode(s: NSData) -> Result<JSONValue> {
     var e: NSError?
     let opts: NSJSONReadingOptions = nil
     let r: AnyObject? = NSJSONSerialization.JSONObjectWithData(s, options: opts, error: &e)
 
     if let json: AnyObject = r {
-      return make(json as NSObject)
+      return Result.value(make(json as NSObject))
     } else {
-      return .None
+      return Result.error(e!)
     }
   }
 
