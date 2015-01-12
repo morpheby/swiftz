@@ -6,20 +6,26 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
+/// MARK: Scrap Your Boilerplate
+/// ~( http://foswiki.cs.uu.nl/foswiki/GenericProgramming/SYB )
 
+/// Types that can serialize themselves to and from a given data format.
 public protocol Dataable {
-  class func typeRep() -> Any.Type
-  class func fromRep(r: Data) -> Self?
-  func toRep() -> Data
+	/// The type of values of the receiver.
+	class func typeRep() -> Any.Type
+	/// Deserializes data into a value of the type of the receiver.
+	class func fromRep(r : Data) -> Self?
+	/// Serializes the receiver into data.
+	func toRep() -> Data
 }
 
+/// A simple data format an object can serialize into and out of.
 public struct Data {
-  public let con: Int
-  public let vals: [(String, Any)]
+	public let con : Int
+	public let vals : [(String, Any)]
 
-  public init(con: Int, vals: [(String, Any)]) {
-    self.con = con
-    self.vals = vals
-  }
+	public init(con: Int, vals: [(String, Any)]) {
+		self.con = con
+		self.vals = vals
+	}
 }

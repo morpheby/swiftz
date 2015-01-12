@@ -6,16 +6,18 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
+import class Foundation.NSDictionary
 
 extension NSDictionary {
-  public func mapValuesToDictionary<K, V>(transform: (AnyObject, AnyObject) -> (K, V)) -> Dictionary<K, V> {
-    var d = Dictionary<K, V>()
-    for (key : AnyObject, value : AnyObject) in self {
-      switch transform(key, value) {
-      case let (k, v): d.updateValue(v, forKey: k)
-      }
-    }
-    return d
-  }
+	/// Maps all object key-value pairs in the receiver into a Swift Dictionary.
+	public func mapValuesToDictionary<K, V>(transform: (AnyObject, AnyObject) -> (K, V)) -> Dictionary<K, V> {
+		var d = Dictionary<K, V>()
+		for (key : AnyObject, value : AnyObject) in self {
+			switch transform(key, value) {
+			case let (k, v): 
+				d.updateValue(v, forKey: k)
+			}
+		}
+		return d
+	}
 }

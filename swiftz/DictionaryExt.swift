@@ -6,54 +6,54 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-extension Dictionary {
-  func map<U, V>(transform: Element -> (U, V)) -> Dictionary<U, V> {
-    var d = Dictionary<U, V>(minimumCapacity: self.count)
-    for (key, value) in self {
-      switch transform(key, value) {
-      case let (k, v): d.updateValue(v, forKey: k)
-      }
-    }
-    return d
-  }
-
-  // Linker bug
-  func mapValues<V>(transform: Element -> V) -> Dictionary<Key, V> {
-    var d = Dictionary<Key, V>(minimumCapacity: self.count)
-    for (key, value) in self {
-       d.updateValue(transform(key, value), forKey: key)
-    }
-    return d
-  }
-
-  func filter(filter: Element -> Bool) -> Dictionary {
-    var f = Dictionary()
-    for (k, v) in self {
-      if filter(k, v) {
-        f[k] = v
-      }
-    }
-    return f
-  }
-
-  func reduce<A>(start:A, reduce:(key:Key, val:Value, start:A) -> A) -> A {
-    var reduced:A?
-    for (k,v) in self {
-      reduced = reduce(key:k, val:v, start:start)
-    }
-
-    switch reduced {
-    case let .Some(a): return a
-    case .None: return start
-    }
-  }
+/// Maps a function taking key-value pairs to key-value pairs over a dictionary.
+public func map<K, V, T, U>(#dict : Dictionary<K, V>) -> ((K, V) -> (T, U)) -> Dictionary<T, U> {
+	return { transform in
+		var d = Dictionary<T, U>(minimumCapacity: dict.count)
+		for (key, value) in dict {
+			switch transform(key, value) {
+			case let (k, v): 
+				d.updateValue(v, forKey: k)
+			}
+		}
+		return d
+	}
 }
 
+/// Returns a dictionary consisting of all the key-value pairs satisfying a predicate.
+public func filter<K, V>(#dict : Dictionary<K, V>) -> ((K, V) -> Bool) -> Dictionary<K, V> {
+	return { pred in
+		var f = Dictionary<K, V>()
+		for (k, v) in dict {
+			if pred(k, v) {
+				f[k] = v
+			}
+		}
+		return f
+	}
+}
 
-public func mapValues<KeyType, ElementType, V>(dict: Dictionary<KeyType, ElementType>, transform: (KeyType, ElementType) -> V) -> Dictionary<KeyType, V> {
-  var d = Dictionary<KeyType, V>(minimumCapacity: dict.count)
-  for (key, value) in dict {
-    d.updateValue(transform(key, value), forKey: key)
-  }
-  return d
+/// Folds a reducing function over all the key-value pairs in a dictionary.
+public func reduce<K, V, A>(#dict : Dictionary<K, V>) -> A -> ((key : K, val : V, start : A) -> A) -> A {
+	return { start in { reduce in
+		var reduced:A?
+		for (k,v) in dict {
+			reduced = reduce(key:k, val:v, start:start)
+		}
+		switch reduced {
+		case let .Some(a): 
+			return a
+		case .None: 
+			return start
+		}
+	} }
+}
+
+/// Maps key-value pairs to new values for each key.
+public func mapValues<KeyType, ElementType, V>(#dict: Dictionary<KeyType, ElementType>, transform: (KeyType, ElementType) -> V) -> Dictionary<KeyType, V> {
+	var d = Dictionary<KeyType, V>(minimumCapacity: dict.count)
+	for (key, value) in dict {
+		d.updateValue(transform(key, value), forKey: key)
+	}
+	return d
 }

@@ -6,65 +6,69 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
-import swiftz_core
+import Darwin
 
 // A HList can be thought of like a tuple, but with list-like operations on the types.
 
-/* closed */ public protocol HList {
-  typealias Head
-  typealias Tail // : HList can't show Nothing is in HList, recursive defn.
-  class func isNil() -> Bool
-  class func makeNil() -> Self
-  class func makeCons(h: Head, t: Tail) -> Self
-  class func length() -> Int
+public protocol HList {
+	typealias Head
+	typealias Tail // : HList can't show Nothing is in HList, recursive defn.
+	class func isNil() -> Bool
+	class func makeNil() -> Self
+	class func makeCons(h: Head, t: Tail) -> Self
+	class func length() -> Int
 }
 
-public final class HCons<H, T: HList> : HList {
-  public typealias Head = H
-  public typealias Tail = T
-  public let head: Box<H>
-  public let tail: Box<T>
-  public init(h: H, t: T) {
-    head = Box<H>(h)
-    tail = Box<T>(t)
-  }
+public struct HCons<H, T: HList> : HList {
+	public typealias Head = H
+	public typealias Tail = T
 
-  public class func isNil() -> Bool {
-    return false
-  }
-  public class func makeNil() -> HCons<H, T> {
-    abort() // impossible
-  }
-  public class func makeCons(h: Head, t: Tail) -> HCons<H, T> {
-    return HCons<H, T>(h: h, t: t)
-  }
+	public let head: H
+	public let tail: T
 
-  public class func length() -> Int {
-    return (1 + Tail.length())
-  }
+	public init(h: H, t: T) {
+		head = h
+		tail = t
+	}
+
+	public static func isNil() -> Bool {
+		return false
+	}
+
+	public static func makeNil() -> HCons<H, T> {
+		return undefined() // impossible
+	}
+
+	public static func makeCons(h: Head, t: Tail) -> HCons<H, T> {
+		return HCons<H, T>(h: h, t: t)
+	}
+
+	public static func length() -> Int {
+		return (1 + Tail.length())
+	}
 }
 
-public final class HNil : HList {
-  public typealias Head = Nothing
-  public typealias Tail = Nothing
+public struct HNil : HList {
+	public typealias Head = Nothing
+	public typealias Tail = Nothing
 
-  public init() {}
-  public class func isNil() -> Bool {
-    return true
-  }
+	public init() {}
 
-  public class func makeNil() -> HNil {
-    return HNil()
-  }
+	public static func isNil() -> Bool {
+		return true
+	}
 
-  public class func makeCons(h: Head, t: Tail) -> HNil {
-    abort() // impossible
-  }
+	public static func makeNil() -> HNil {
+		return HNil()
+	}
 
-  public class func length() -> Int {
-    return 0
-  }
+	public static func makeCons(h: Head, t: Tail) -> HNil {
+		return undefined() // impossible
+	}
+
+	public static func length() -> Int {
+		return 0
+	}
 }
 
 // TODO: map and reverse

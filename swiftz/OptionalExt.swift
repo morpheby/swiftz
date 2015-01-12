@@ -6,24 +6,34 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-// warning: flatMap can not be linked. rdar://17149404
-extension Optional {
-  func flatMap<B>(f: (T -> Optional<B>)) -> Optional<B> {
-    return self.maybe(.None, f)
-  }
+/// Applies a function to the contents of an Optional to yield a new Optional.  If no value exists
+/// the result of this function is None.
+public func flatMap<A, B>(m : Optional<A>) -> (A -> Optional<B>) -> Optional<B> {
+	return { f in maybe(m)(.None)(f) }
+}
 
-  func maybe<B>(z : B, f : T -> B) -> B {
-    switch self {
-    case .None: return z
-    case let .Some(x): return f(x)
-    }
-  }
+/// Case analysis for the Maybe type.  Given a maybe, a default value in case it is None, and
+/// a function, maps the function over the value in the Maybe.
+public func maybe<A, B>(m : Optional<A>) -> B -> (A -> B) -> B {
+	return { z in { f in
+		switch m {
+		case .None: 
+			return z
+		case let .Some(x): 
+			return f(x)
+		}
+	} }
+}
 
-  // scala's getOrElse
-  func getOrElse(x: T) -> T {
-    switch self {
-    case .None: return x
-    case let .Some(x): return x
-    }
-  }
+/// Given an Optional and a default value returns the value of the Optional when it is Some, else
+/// this function returns the default value.
+public func getOrElse<T>(m : Optional<T>) -> T -> T {
+	return { def in
+		switch m {
+		case .None: 
+			return def
+		case let .Some(x): 
+			return x
+		}
+	}
 }
