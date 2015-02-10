@@ -34,13 +34,6 @@ public final class Future<A> : K1<A> {
 		exec.submit(self, work: a)
 	}
 
-	public init(exec: ExecutionContext, _ a: @autoclosure () -> A) {
-		execCtx = exec
-		super.init()
-		dispatch_suspend(self.resultQueue)
-		exec.submit(self, work: a)
-	}
-
 	/// Forces a value to be computed 
 	public func result() -> A {
 		var result : A? = nil

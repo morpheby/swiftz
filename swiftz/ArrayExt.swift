@@ -14,7 +14,7 @@ public func safeIndex<T>(array : Array<T>)(i : Int) -> T? {
 }
 
 /// Returns the result of concatenating the values in the left and right arrays together.
-public func concat<T>(#lhs: [T])(#rhs : [T]) -> [T] {
+public func concat<T>(#lhs: [T])(rhs : [T]) -> [T] {
 	return lhs + rhs
 }
 

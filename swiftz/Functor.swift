@@ -27,10 +27,10 @@ public protocol Functor {
 
 /// The Identity Functor holds a singular value.
 public struct Id<A> {
-	private let a : @autoclosure () -> A
+	private let a : () -> A
 
 	public init(_ aa : A) {
-		a = aa
+        a = { aa }
 	}
 
 	public var runId : A {
@@ -66,10 +66,10 @@ extension Id : Comonad {
 
 // The Constant Functor ignores fmap.
 public struct Const<A, B> {
-	private let a : @autoclosure () -> A
+	private let a : () -> A
 
 	public init(_ aa : A) {
-		a = aa
+        a = { aa }
 	}
 
 	public var runConst : A {

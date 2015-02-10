@@ -14,13 +14,12 @@ import Darwin
 public final class Chan<A> : K1<A> {
 	var stream : [A]
 
-	let mutex : UnsafeMutablePointer<pthread_mutex_t> = nil
-	let cond : UnsafeMutablePointer<pthread_cond_t> = nil
-	let matt : UnsafeMutablePointer<pthread_mutexattr_t> = nil
+	let mutex : UnsafeMutablePointer<pthread_mutex_t>
+	let cond : UnsafeMutablePointer<pthread_cond_t>
+	let matt : UnsafeMutablePointer<pthread_mutexattr_t>
 
 	public override init() {
 		self.stream = []
-		super.init()
 		var mattr : UnsafeMutablePointer<pthread_mutexattr_t> = UnsafeMutablePointer.alloc(sizeof(pthread_mutexattr_t))
 		mutex = UnsafeMutablePointer.alloc(sizeof(pthread_mutex_t))
 		cond = UnsafeMutablePointer.alloc(sizeof(pthread_cond_t))
@@ -29,7 +28,8 @@ public final class Chan<A> : K1<A> {
 		matt = UnsafeMutablePointer(mattr)
 		pthread_mutex_init(mutex, matt)
 		pthread_cond_init(cond, nil)
-		stream = []
+        stream = []
+        super.init()
 	}
 
 	deinit {

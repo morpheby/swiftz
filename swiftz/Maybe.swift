@@ -18,7 +18,9 @@ public struct Maybe<A> {
 		value = v
 	}
 
-	public init() { }
+	public init() {
+        value = nil
+    }
 
 	/// Constructs a Maybe holding a value.
 	public static func just(t : A) -> Maybe<A> {

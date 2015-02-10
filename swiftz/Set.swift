@@ -11,7 +11,7 @@ import Darwin
 /// An immutable unordered sequence of distinct values.  Values are checked for uniqueness using 
 /// their hashes.
 public struct Set<A : Hashable> {
-	let bucket : Dictionary<A, Bool> = Dictionary()
+	let bucket : Dictionary<A, Bool>
 
 	var array : [A] {
 		var arr = [A]()
@@ -26,16 +26,20 @@ public struct Set<A : Hashable> {
 	}
 
 	/// Returns an empty set.
-	public init() { }
+	public init() {
+        bucket = Dictionary()
+    }
 
 	/// Creates a set from an array of objects.
 	///
 	/// If there are multiple objects contained in the set that are not distinct, the last of any 
 	/// such objects are what will remain in the returned set.
 	public init(array : [A]) {
+        var t = Dictionary<A, Bool>()
 		for obj in array {
-			bucket[obj] = true
+			t[obj] = true
 		}
+        bucket = t
 	}
 
 	/// Retrieves a random element from the receiver.

@@ -22,7 +22,7 @@ public struct Sum<A, N: Num where N.N == A> : Monoid {
 
 	let n: () -> N // work around for rdar://17109323
 
-	public init(i : @autoclosure () -> N) {
+	public init(i : () -> N) {
 		n = i
 	}
 
@@ -41,7 +41,7 @@ public struct Product<A, N: Num where N.N == A> : Monoid {
 
 	let n: () -> N
 
-	public init(i : @autoclosure () -> N) {
+	public init(i : () -> N) {
 		n = i
 	}
 

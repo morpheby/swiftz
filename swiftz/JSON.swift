@@ -22,7 +22,7 @@ public enum JSONValue: Printable {
 		case let JSONArray(xs): 
 			return NSArray(array: xs.map { $0.values() })
 		case let JSONObject(xs): 
-			return NSDictionary(dictionary: map(dict: xs)({ (k: String, v: JSONValue) -> (String, AnyObject) in
+			return NSDictionary(dictionary: map(dict: xs)({ (k: String, v: JSONValue) -> (NSString, AnyObject) in
 				return (NSString(string: k), v.values())
 			}))
 		case let JSONNumber(n): 
@@ -41,10 +41,10 @@ public enum JSONValue: Printable {
 	public static func make(a: NSObject) -> JSONValue {
 		switch a {
 		case let xs as NSArray:
-			return .JSONArray(xs.mapToArray { self.make($0 as NSObject) })
+			return .JSONArray(xs.mapToArray { self.make($0 as! NSObject) })
 		case let xs as NSDictionary:
 			return JSONValue.JSONObject(xs.mapValuesToDictionary { (k: AnyObject, v: AnyObject) in
-				return (String(k as NSString), self.make(v as NSObject))
+				return (String(k as! NSString), self.make(v as! NSObject))
 			})
 		case let xs as NSNumber: // TODO: number or bool?...
 			return .JSONNumber(Double(xs.doubleValue))
@@ -71,7 +71,7 @@ public enum JSONValue: Printable {
 		let r: AnyObject? = NSJSONSerialization.JSONObjectWithData(s, options: opts, error: &e)
 		
 		if let json: AnyObject = r {
-			return Result.value(make(json as NSObject))
+			return Result.value(make(json as! NSObject))
 		} else {
 			return Result.error(e!)
 		}
@@ -145,12 +145,12 @@ public func !=(lhs: JSONValue, rhs: JSONValue) -> Bool {
 
 public protocol JSONDecode {
 	typealias J
-	class func fromJSON(x: JSONValue) -> J?
+	static func fromJSON(x: JSONValue) -> J?
 }
 
 public protocol JSONEncode {
 	typealias J
-	class func toJSON(x: J) -> JSONValue
+	static func toJSON(x: J) -> JSONValue
 }
 
 public protocol JSON: JSONDecode, JSONEncode {

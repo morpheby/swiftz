@@ -37,7 +37,7 @@ public final class MVar<A> : K1<A> {
 		pthread_cond_init(condRead, nil)
 	}
 
-	public convenience init(a: @autoclosure () -> A) {
+	public convenience init(a: () -> A) {
 		self.init()
 		value = a
 	}

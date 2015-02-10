@@ -363,8 +363,8 @@ public postfix func &%<T : _IntegerArithmeticType>(lhs: T) -> T -> T {
 prefix operator && {}
 postfix operator && {}
 
-public prefix func &&<T : BooleanType>(rhs: @autoclosure () -> Bool) -> T -> Bool {
-	return { lhs in lhs && rhs }
+public prefix func &&<T : BooleanType>(@autoclosure rhs: () -> Bool)(@autoclosure lhs: () -> T) -> Bool {
+	return lhs() && rhs()
 }
 
 public postfix func &&<T : BooleanType>(lhs: T) -> Bool -> Bool {
@@ -427,11 +427,11 @@ public postfix func ^<T : _RawOptionSetType>(a: T) -> T -> T {
 }
 
 public prefix func ^(rhs: Bool) -> Bool -> Bool {
-	return { lhs in lhs ^ rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func ^(lhs: Bool) -> Bool -> Bool {
-	return { rhs in lhs ^ rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func ^(rhs: UInt8) -> UInt8 -> UInt8 {
@@ -526,11 +526,11 @@ public postfix func |<T : _RawOptionSetType>(a: T) -> T -> T {
 }
 
 public prefix func |(rhs: Bool) -> Bool -> Bool {
-	return { lhs in lhs | rhs }
+	return { lhs in lhs || rhs }
 }
 
 public postfix func |(lhs: Bool) -> Bool -> Bool {
-	return { rhs in lhs | rhs }
+	return { rhs in lhs || rhs }
 }
 
 public prefix func |(rhs: UInt8) -> UInt8 -> UInt8 {
@@ -1329,14 +1329,6 @@ public prefix func ==(rhs: FloatingPointClassification) -> FloatingPointClassifi
 	return { lhs in lhs == rhs }
 }
 
-public prefix func ==<Value, Element>(lhs: HeapBuffer<Value, Element>) -> HeapBuffer<Value, Element> -> Bool {
-	return { rhs in lhs == rhs }
-}
-
-public postfix func ==<Value, Element>(lhs: HeapBuffer<Value, Element>) -> HeapBuffer<Value, Element> -> Bool {
-	return { rhs in lhs == rhs }
-}
-
 public prefix func ==<T>(rhs: CFunctionPointer<T>) -> CFunctionPointer<T> -> Bool {
 	return { lhs in lhs == rhs }
 }
@@ -1689,14 +1681,6 @@ public postfix func !=(lhs: FloatingPointClassification) -> FloatingPointClassif
 
 public prefix func !=(rhs: FloatingPointClassification) -> FloatingPointClassification -> Bool {
 	return { lhs in lhs == rhs }
-}
-
-public prefix func !=<Value, Element>(lhs: HeapBuffer<Value, Element>) -> HeapBuffer<Value, Element> -> Bool {
-	return { rhs in lhs == rhs }
-}
-
-public postfix func !=<Value, Element>(lhs: HeapBuffer<Value, Element>) -> HeapBuffer<Value, Element> -> Bool {
-	return { rhs in lhs == rhs }
 }
 
 public prefix func !=<T>(rhs: CFunctionPointer<T>) -> CFunctionPointer<T> -> Bool {
