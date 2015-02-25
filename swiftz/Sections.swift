@@ -349,17 +349,6 @@ public postfix func ..<<Pos : ForwardIndexType>(minimum: Pos) -> Pos -> Range<Po
 	return { maximum in minimum..<maximum }
 }
 
-prefix operator &% {}
-postfix operator &% {}
-
-public prefix func &%<T : _IntegerArithmeticType>(rhs: T) -> T -> T {
-	return { lhs in lhs &% rhs }
-}
-
-public postfix func &%<T : _IntegerArithmeticType>(lhs: T) -> T -> T {
-	return { rhs in lhs &% rhs }
-}
-
 prefix operator && {}
 postfix operator && {}
 
@@ -402,17 +391,6 @@ public prefix func &-<T : _IntegerArithmeticType>(rhs: T) -> T -> T {
 
 public postfix func &-<T : _IntegerArithmeticType>(lhs: T) -> T -> T {
 	return { rhs in lhs &- rhs }
-}
-
-prefix operator &/ {}
-postfix operator &/ {}
-
-public prefix func &/<T : _IntegerArithmeticType>(rhs: T) -> T -> T {
-	return { lhs in lhs &/ rhs }
-}
-
-public postfix func &/<T : _IntegerArithmeticType>(lhs: T) -> T -> T {
-	return { rhs in lhs &/ rhs }
 }
 
 prefix operator ^ {}
