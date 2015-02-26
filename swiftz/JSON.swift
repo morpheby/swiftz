@@ -46,7 +46,11 @@ public enum JSONValue: Printable {
 			return JSONValue.JSONObject(xs.mapValuesToDictionary { (k: AnyObject, v: AnyObject) in
 				return (String(k as! NSString), self.make(v as! NSObject))
 			})
-		case let xs as NSNumber: // TODO: number or bool?...
+		case let xs as NSNumber where String.fromCString(xs.objCType) == "c":
+            // There is no 'char' value for JSON in NSJSONSerialization, so
+            // it is safe to assume that's BOOL
+            return .JSONBool(xs.boolValue)
+        case let xs as NSNumber:
 			return .JSONNumber(Double(xs.doubleValue))
 		case let xs as NSString: 
 			return .JSONString(String(xs))
