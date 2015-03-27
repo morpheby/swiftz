@@ -34,8 +34,8 @@ extension Either : Pointed {
 	}
 }
 
-extension Set : Pointed {
-	public static func pure(x : A) -> Set<A> {
-		return Set(arrayLiteral: x)
-	}
-}
+//extension Set : Pointed {
+//	public static func pure(x : A) -> Set<A> {
+//		return Set(arrayLiteral: x)
+//	}
+//}
